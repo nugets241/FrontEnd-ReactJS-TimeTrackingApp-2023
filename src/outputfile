@@ -1,0 +1,249 @@
+./App.css:
+/* Common styles for all screen sizes */
+nav {
+  background-color: #f8f9fa;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.view {
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tasks {
+  border: solid 2px #000000;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  width: 100%;
+  margin-bottom: 1em;
+  list-style: none;
+  background-color: #F5F5DC;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  margin-left: 0.5em;
+}
+
+input {
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+}
+
+select {
+  margin-right: 0.5em;
+}
+
+button:hover, select:hover, label:hover {
+  cursor: pointer;
+}
+
+.light {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* Dark Theme */
+.dark {
+  background-color: #333;
+  color: #f8f9fa;
+}
+
+.tags{
+  color: #333;
+}
+
+/* For screens between 500px and 1024px (tablet devices) */
+@media (min-width: 500px) and (max-width: 1024px) {
+  .view {
+    max-width: 70%;
+  }
+
+  .navList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .tasks {
+    width: 70%;
+  }
+
+  nav ul {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  nav ul li {
+    margin: 0 10px;
+  }
+}
+
+/* For screens larger than 1024px (desktop) */
+@media (min-width: 1025px) {
+  .view {
+    max-width: 50em;
+  }
+
+  .tasks {
+    width: 30em;
+  }
+}
+./App.jsx:
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Home from './views/Home';
+import AnalyzeTime from './views/AnalyzeTime';
+import Info from './views/Info';
+import ManageTime from './views/ManageTime';
+import DailyActivityChart from './views/DailyActivityChart';
+import Settings from './views/Settings'; // Add this line
+import './App.css';
+
+function App() {
+  const [tasks, setTasks] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [theme, setTheme] = useState('light');
+  const [singleTaskMode, setSingleTaskMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add this line
+  const [error, setError] = useState(null); // Add this line
+
+  useEffect(() => {
+    fetch('http://localhost:3010/settings')
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error fetching settings');
+        }
+      })
+      .then((data) => {
+        setTheme(data.theme);
+        setSingleTaskMode(data.singleTaskMode);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:3010/tasks')
+      .then((response) => response.json())
+      .then((data) => setTasks(data))
+      .catch((error) => console.error('Error fetching tasks:', error));
+  }, [selectedTags]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      fetch('http://localhost:3010/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ theme, singleTaskMode }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error updating settings');
+          }
+        })
+        .catch((error) => setError(error.message));
+    }
+  }, [theme, singleTaskMode, isLoading]);
+  const allTags = [...new Set(tasks.flatMap(task => task.tags))];
+  const filteredTasks = selectedTags.length > 0 ? tasks.filter(task => selectedTags.every(tag => task.tags.includes(tag))) : tasks;
+
+
+  function updateTasks(updatedTask) {
+    fetch('http://localhost:3010/tasks')
+      .then((response) => response.json())
+      .then((data) => setTasks(data))
+      .catch((error) => console.error('Error fetching tasks:', error));
+  }
+
+  return (
+    <Router>
+      <div className={theme}>
+        <nav>
+          <ul className='navList'>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/analyze">Analyze Time</Link></li>
+            <li><Link to="/manage-intervals">Manage Time</Link></li>
+            <li><Link to="/chart">Activity Chart</Link></li>
+            <li><Link to="/info">Info</Link></li>
+            <li><Link to="/settings">Settings</Link></li> {/* Add this line */}
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Home tasks={filteredTasks} setTasks={setTasks} allTags={allTags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} singleTaskMode={singleTaskMode} updateTasks={updateTasks} />} />
+          <Route path="/analyze" element={<AnalyzeTime tasks={tasks} setTasks={setTasks} />} />
+          <Route path="/manage-intervals" element={<ManageTime tasks={tasks} setTasks={setTasks} />} />
+          <Route path="/chart" element={<DailyActivityChart tasks={tasks} />} />
+          <Route path="/info" element={<Info />} />
+          <Route path="/settings" element={<Settings theme={theme} setTheme={setTheme} singleTaskMode={singleTaskMode} setSingleTaskMode={setSingleTaskMode} />} /> {/* Add this line */}
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+./assets:
+./index.css:
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+./main.jsx:
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <App />
+)
+./outputfile:
+./views:

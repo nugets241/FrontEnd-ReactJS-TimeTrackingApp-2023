@@ -1,0 +1,167 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Working on a project",
+      "tags": [
+        "work",
+        "project"
+      ],
+      "order": 1,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-11-03T11:00:00.000Z",
+          "endDate": "2023-11-04T11:00:00.000Z"
+        },
+        {
+          "startDate": "2023-11-03T22:00:00.000Z",
+          "endDate": "2023-11-03T22:01:10.000Z"
+        },
+        {
+          "startDate": "2023-11-04T23:14:13.732Z",
+          "endDate": "2023-11-04T23:14:18.330Z"
+        },
+        {
+          "startDate": "2023-11-04T22:00:00.000Z",
+          "endDate": "2023-11-05T12:03:12.702Z"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Play guitar",
+      "tags": [
+        "hobby",
+        "project"
+      ],
+      "order": 0,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-10-31T22:21:33.582Z",
+          "endDate": "2023-11-01T22:21:34.195Z"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Sleeping",
+      "tags": [
+        "rest",
+        "hobby"
+      ],
+      "order": 2,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-10-30T22:21:35.239Z",
+          "endDate": "2023-10-31T22:21:35.661Z"
+        },
+        {
+          "startDate": "2023-11-05T00:26:21.396Z",
+          "endDate": "2023-11-05T00:26:25.518Z"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Reading a book",
+      "tags": [
+        "hobby",
+        "rest"
+      ],
+      "order": 3,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-10-28T22:21:36.744Z",
+          "endDate": "2023-10-29T22:21:37.191Z"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Going for a run",
+      "tags": [
+        "exercise"
+      ],
+      "order": 4,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-10-26T22:21:38.198Z",
+          "endDate": "2023-10-27T22:21:38.579Z"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Cooking dinner",
+      "tags": [
+        "meal",
+        "hobby"
+      ],
+      "order": 5,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-10-24T22:21:39.646Z",
+          "endDate": "2023-10-25T22:21:39.987Z"
+        },
+        {
+          "startDate": "2023-11-05T00:27:04.802Z",
+          "endDate": "2023-11-05T00:27:08.948Z"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Meeting with team",
+      "tags": [
+        "work",
+        "meeting"
+      ],
+      "order": 6,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-10-22T22:21:42.212Z",
+          "endDate": "2023-10-23T22:21:42.618Z"
+        }
+      ]
+    },
+    {
+      "name": "Ride a bike",
+      "tags": [
+        "exercise",
+        "hobby"
+      ],
+      "id": 8,
+      "order": 7,
+      "isActive": false,
+      "activityPeriods": [
+        {
+          "startDate": "2023-10-20T22:21:43.925Z",
+          "endDate": "2023-10-21T22:21:44.345Z"
+        },
+        {
+          "startDate": "2023-11-05T00:03:20.913Z",
+          "endDate": "2023-11-05T00:03:24.879Z"
+        },
+        {
+          "startDate": "2023-11-05T18:39:38.761Z",
+          "endDate": "2023-11-05T18:39:39.619Z"
+        },
+        {
+          "startDate": "2023-11-05T21:08:40.644Z",
+          "endDate": "2023-11-05T21:08:47.913Z"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "theme": "light",
+    "singleTaskMode": true
+  }
+}
